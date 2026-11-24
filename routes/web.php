@@ -26,6 +26,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // TODO 3: Bungkus route terproteksi dengan middleware 'auth', pisahkan route khusus 'role:dosen' dan 'role:mahasiswa', serta aktifkan route penilaian & export CSV
+Route::middleware('auth')->group(function () {
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -70,8 +71,11 @@ Route::get('/assignments/{assignment}/submissions', [AssignmentController::class
 
 // Penilaian Tugas & Export CSV (Khusus Dosen - Aktifkan di TODO 3)
 // Route::patch('/submissions/{submission}/grade', [SubmissionController::class, 'grade'])->whereNumber('submission')->name('submissions.grade');
+Route::patch('/submissions/{submission}/grade', [SubmissionController::class, 'grade'] )->whereNumber('submission')->name('submissions.grade');
 // Route::get('/assignments/{assignment}/export-csv', [SubmissionController::class, 'exportCsv'])->whereNumber('assignment')->name('assignments.export-csv');
-
+Route::get('/assignments/{assignment}/export-csv', [SubmissionController::class, 'exportCsv'])->whereNumber('assignment')->name('assignments.export-csv');
 // Pengajuan Pendaftaran Kelas & Pengumpulan Tugas (Khusus Mahasiswa)
 Route::post('/courses/{course}/enroll-request', [MataKuliahController::class, 'enrollRequest'])->whereNumber('course')->name('courses.enroll-request');
 Route::post('/assignments/{assignment}/submit', [SubmissionController::class, 'store'])->whereNumber('assignment')->name('submissions.store');
+
+});
